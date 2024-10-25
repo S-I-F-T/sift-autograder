@@ -21,6 +21,7 @@ type Config struct {
 	AllowedSyscalls      []string          `json:"allow_system_calls"`
 }
 
+// UnmarshalJSON Grab data from JSON file, parse them into their correct data structure
 func (c *Config) UnmarshalJSON(data []byte) error {
 	c.Testcases = nil
 	c.AssignmentMessage = ""
@@ -50,7 +51,8 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-type Autograding struct {
+// FileMovement define how files are moved through the autograding process
+type FileMovement struct {
 	CompilationsToRunner     []string `json:"compilation_to_runner"`
 	CompilationsToValidation []string `json:"compilation_to_validation"`
 	SubmissionsToCompilation []string `json:"submission_to_compilation"`
@@ -60,6 +62,7 @@ type Autograding struct {
 	UseCheckoutSubdirectory  string   `json:"use_checkout_subdirectory"`
 }
 
+// ContainerOptions the different options the container of the autograder uses
 type ContainerOptions struct {
 	ContainerImage         string `json:"container_image"`
 	NumberOfPorts          int    `json:"number_of_ports"`
@@ -77,6 +80,8 @@ func (gp *GradingParameters) validate() error {
 	panic("Implement me!")
 }
 
+// Container Specify Docker containers for this testcase and what will be run in each of them.
+// Each container is specified by an object with no key that contains the following fields.
 type Container struct {
 	Commands            []string `json:"commands"`
 	ContainerName       string   `json:"container_name"`

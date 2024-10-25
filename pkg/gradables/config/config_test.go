@@ -22,7 +22,7 @@ func TestConfigJSON(t *testing.T) {
 			"default", "jailed_sandbox", "jailed_sandbox", Autograding{},
 			ContainerOptions{}, nil},
 
-		{[]Testcase{{Title: &someTitle, Type: "Execution"}}, "", 100_000, GradingParameters{},
+		{[]Testcase{Testcase{Title: someTitle, Type: "Execution", Commands: []string{"hi"}}}, "", 100_000, GradingParameters{},
 			nil, "default", "jailed_sandbox", "jailed_sandbox",
 			Autograding{}, ContainerOptions{}, nil},
 	}

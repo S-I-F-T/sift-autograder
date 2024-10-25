@@ -9,7 +9,7 @@ import (
 
 type Testcase struct {
 	Type            string       `json:"type"`
-	Title           *string      `json:"title"`
+	Title           string       `json:"title"`
 	Details         string       `json:"details"`
 	Points          int          `json:"points"`
 	Hidden          bool         `json:"hidden"`
@@ -50,7 +50,7 @@ func (tc *Testcase) validate() error {
 		return &ConfigError{fmt.Sprintf("'testcase.type' must be one of: %s", strings.Join(types, ", "))}
 	}
 
-	if tc.Title == nil {
+	if tc.Title == "" {
 		return &ConfigError{"'testcase.title' is required"}
 	}
 
