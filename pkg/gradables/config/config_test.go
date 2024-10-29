@@ -53,7 +53,7 @@ func TestConfigJSON(t *testing.T) {
 
 func TestConfigInvalidJSON(t *testing.T) {
 	inputs := []string{
-		"",
+		"null",
 		"{}",
 	}
 
@@ -62,7 +62,7 @@ func TestConfigInvalidJSON(t *testing.T) {
 		err := json.Unmarshal([]byte(input), actual)
 
 		if err == nil {
-			t.Errorf("Test %d: JSON unmarshalling should have failed", idx)
+			t.Errorf("Test %d: JSON unmarshalling should have failed for JSON '%s'", idx, input)
 		}
 
 		var cfgErr *ConfigError

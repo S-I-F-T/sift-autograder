@@ -35,10 +35,6 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 	c.ContainerOptions = ContainerOptions{} // TODO
 	c.AllowedSyscalls = nil
 
-	if string(data) == "null" || string(data) == `""` {
-		return nil
-	}
-
 	type JSONConfig Config
 	if err := json.Unmarshal(data, (*JSONConfig)(c)); err != nil {
 		return err
@@ -49,6 +45,16 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 	}
 
 	return nil
+}
+
+type Autograding struct {
+	CompilationsToRunner     []string `json:"compilation_to_runner"`
+	CompilationsToValidation []string `json:"compilation_to_validation"`
+	SubmissionsToCompilation []string `json:"submission_to_compilation"`
+	SubmissionsToRunner      []string `json:"submission_to_runner"`
+	SubmissionsToValidation  []string `json:"submission_to_validation"`
+	WorkToDetails            []string `json:"work_to_details"`
+	UseCheckoutSubdirectory  string   `json:"use_checkout_subdirectory"`
 }
 
 // FileMovement define how files are moved through the autograding process
@@ -65,19 +71,26 @@ type FileMovement struct {
 // ContainerOptions the different options the container of the autograder uses
 type ContainerOptions struct {
 	ContainerImage         string `json:"container_image"`
-	NumberOfPorts          int    `json:"number_of_ports"`
+	NumberOfPorts          uint16 `json:"number_of_ports"`
 	SinglePortPerContainer bool   `json:"single_port_per_container"`
 	UseRouter              bool   `json:"use_router"`
 }
 
 func (co *ContainerOptions) validate() error {
-	panic("Implement me!")
+	if len(co.ContainerImage) <= 0 {
+		return &ConfigError{"'container_image' field cannot be left blank"}
+	}
+
+	return nil
 }
 
-type GradingParameters struct{} // TODO: implement
+type GradingParameters struct {
+	AutoPoints        uint16 `json:"AUTO_POINTS"`
+	ExtraCreditPoints uint16 `json:"EXTRA_CREDIT_POINTS"`
+}
 
 func (gp *GradingParameters) validate() error {
-	panic("Implement me!")
+	return nil
 }
 
 // Container Specify Docker containers for this testcase and what will be run in each of them.
