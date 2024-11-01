@@ -13,6 +13,7 @@ func TestConfigJSON(t *testing.T) {
 	inputs := []string{
 		`{"testcases":[]}`,
 		`{"testcases":[{"title":"some title","command":["hi"]}]}`,
+		`{"testcases":[{"title":"some title","command":["g++", "hello.cpp", "-o", "hello.exe"],"extra_credit":true}]}`,
 	}
 
 	someTitle := "some title"
@@ -23,6 +24,10 @@ func TestConfigJSON(t *testing.T) {
 			ContainerOptions{}, nil},
 
 		{[]Testcase{Testcase{Title: someTitle, Type: "Execution", Commands: []string{"hi"}}}, "", 100_000, GradingParameters{},
+			nil, "default", "jailed_sandbox", "jailed_sandbox",
+			Autograding{}, ContainerOptions{}, nil},
+
+		{[]Testcase{Testcase{Title: someTitle, Type: "Execution", Commands: []string{"g++", "hello.cpp", "-o", "hello.exe"}, ExtraCredit: th irue}}, "", 100_000, GradingParameters{},
 			nil, "default", "jailed_sandbox", "jailed_sandbox",
 			Autograding{}, ContainerOptions{}, nil},
 	}
