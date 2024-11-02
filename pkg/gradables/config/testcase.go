@@ -7,23 +7,30 @@ import (
 	"strings"
 )
 
+const (
+	Compilation = "Compilation"
+	Execution   = "Execution"
+	FileCheck   = "FileCheck"
+)
+
 type Testcase struct {
-	Type            string       `json:"type"`
-	Title           string       `json:"title"`
-	Details         string       `json:"details"`
-	Points          int          `json:"points"`
-	Hidden          bool         `json:"hidden"`
-	ExtraCredit     bool         `json:"extra_credit"`
-	Filenames       []string     `json:"filename"`
-	ExecutableNames []string     `json:"executable_name"`
-	Commands        []string     `json:"command"`
-	Containers      []Container  `json:"containers"`
-	Validations     []Validation `json:"validation"`
-	Actions         []string     `json:"actions"`
+	Type            string         `json:"type"`
+	Title           string         `json:"title"`
+	Details         string         `json:"details"`
+	Points          int            `json:"points"`
+	Hidden          bool           `json:"hidden"`
+	ExtraCredit     bool           `json:"extra_credit"`
+	Filenames       []string       `json:"filename"`
+	ExecutableNames []string       `json:"executable_name"`
+	Commands        []string       `json:"command"`
+	Containers      []Container    `json:"containers"`
+	Validations     []Validation   `json:"validation"`
+	Actions         []string       `json:"actions"`
+	ResourceLimits  ResourceLimits `json:"resource_limits"`
 }
 
 func (tc *Testcase) UnmarshalJSON(data []byte) error {
-	tc.Type = "Execution"
+	tc.Type = "Execution" // Could also
 	tc.Details = ""
 	tc.Points = 0
 	tc.Hidden = false
@@ -38,6 +45,12 @@ func (tc *Testcase) UnmarshalJSON(data []byte) error {
 
 	if err := json.Unmarshal(data, (*JSONTestcase)(tc)); err != nil {
 		return err
+	}
+
+	if tc.ResourceLimits.CPUTime <= 0 {
+		if tc.Type == Compilation {
+
+		}
 	}
 
 	return tc.validate()
