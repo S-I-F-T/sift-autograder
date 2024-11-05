@@ -21,15 +21,15 @@ func TestConfigJSON(t *testing.T) {
 	expected := []*Config{
 		{[]Testcase{}, "", 100_000, GradingParameters{}, nil,
 			"default", "jailed_sandbox", "jailed_sandbox", Autograding{},
-			ContainerOptions{}, nil},
+			ContainerOptions{}, nil, ResourceLimits{}},
 
 		{[]Testcase{Testcase{Title: someTitle, Type: "Execution", Commands: []string{"hi"}}}, "", 100_000, GradingParameters{},
 			nil, "default", "jailed_sandbox", "jailed_sandbox",
-			Autograding{}, ContainerOptions{}, nil},
+			Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
 
-		{[]Testcase{Testcase{Title: someTitle, Type: "Execution", Commands: []string{"g++", "hello.cpp", "-o", "hello.exe"}, ExtraCredit: th irue}}, "", 100_000, GradingParameters{},
+		{[]Testcase{Testcase{Title: someTitle, Type: "Execution", Commands: []string{"g++", "hello.cpp", "-o", "hello.exe"}, ExtraCredit: true}}, "", 100_000, GradingParameters{},
 			nil, "default", "jailed_sandbox", "jailed_sandbox",
-			Autograding{}, ContainerOptions{}, nil},
+			Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
 	}
 
 	if len(inputs) != len(expected) {

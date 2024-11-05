@@ -19,6 +19,7 @@ type Config struct {
 	Autograding          Autograding       `json:"autograding"`
 	ContainerOptions     ContainerOptions  `json:"container_options"`
 	AllowedSyscalls      []string          `json:"allow_system_calls"`
+	ResourceLimits       ResourceLimits    `json:"resource_limits"`
 }
 
 // UnmarshalJSON Grab data from JSON file, parse them into their correct data structure
@@ -110,4 +111,14 @@ type ConfigError struct {
 
 func (err *ConfigError) Error() string {
 	return err.Message
+}
+
+type ResourceLimits struct {
+	CPUTime         uint `json:"RLIMIT_CPU"`        // Max seconds
+	FileSize        uint `json:"RLIMIT_FSIZE"`      // Max bytes
+	MaxResidentSet  uint `json:"RLIMIT_RSS"`        // Max bytes
+	NumProcesses    uint `json:"RLIMIT_NPROC"`      // Max threads
+	MaxFileNumber   uint `json:"RLIMIT_NOFILE"`     // Max descriptor number
+	MaxAddressSpace uint `json:"RLIMIT_AS"`         // Max bytes
+	MaxSignalQueue  uint `json:"RLIMIT_SIGPENDING"` // Max num of signals pending
 }
