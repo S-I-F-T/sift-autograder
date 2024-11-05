@@ -8,6 +8,9 @@ import (
 	"testing"
 )
 
+/* Validating the config.json through the 
+TestConfigJSON() function and outputting
+errors from config structure. */
 func TestConfigJSON(t *testing.T) {
 
 	inputs := []string{
@@ -56,6 +59,7 @@ func TestConfigJSON(t *testing.T) {
 
 }
 
+// Testing failures for invalid config.json files.
 func TestConfigInvalidJSON(t *testing.T) {
 	inputs := []string{
 		"null",
