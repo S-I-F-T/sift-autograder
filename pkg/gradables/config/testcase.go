@@ -13,20 +13,21 @@ const (
 	FileCheck   = "FileCheck"
 )
 
+// struct for testcases
 type Testcase struct {
-	Type            string         `json:"type"`
-	Title           string         `json:"title"`
-	Details         string         `json:"details"`
-	Points          int            `json:"points"`
-	Hidden          bool           `json:"hidden"`
-	ExtraCredit     bool           `json:"extra_credit"`
-	Filenames       []string       `json:"filename"`
-	ExecutableNames []string       `json:"executable_name"`
-	Commands        []string       `json:"command"`
-	Containers      []Container    `json:"containers"`
-	Validations     []Validation   `json:"validation"`
-	Actions         []string       `json:"actions"`
-	ResourceLimits  ResourceLimits `json:"resource_limits"`
+	Type            string         `json:"type"` // type of testcase
+	Title           string         `json:"title"` // name of testcase
+	Details         string         `json:"details"` // details of testcase
+	Points          int            `json:"points"` // points allocated for testcase
+	Hidden          bool           `json:"hidden"` // hidden testcases from user
+	ExtraCredit     bool           `json:"extra_credit"` // extra-credit testcases
+	Filenames       []string       `json:"filename"` // testcase files
+	ExecutableNames []string       `json:"executable_name"` // executable for testcase execution
+	Commands        []string       `json:"command"` // linux commands executed during compilation and/or execution
+	Containers      []Container    `json:"containers"` // docker containers and what will be run on each.
+	Validations     []Validation   `json:"validation"` // automatic checks for STDOUT.txt, STDERR.txt, and the execution logfile.
+	Actions         []string       `json:"actions"` // actions for testcase
+	ResourceLimits  ResourceLimits `json:"resource_limits"` // resource limits for testcase to prevent overuse
 }
 
 func (tc *Testcase) UnmarshalJSON(data []byte) error {
