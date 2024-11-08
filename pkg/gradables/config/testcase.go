@@ -50,8 +50,22 @@ func (tc *Testcase) UnmarshalJSON(data []byte) error {
 
 	if tc.ResourceLimits.CPUTime <= 0 {
 		if tc.Type == Compilation {
-
+			if tc.ResourceLimits.MaxCPUTime == nil || *tc.ResourceLimits.MaxCPUTime < 60 {
+				*tc.ResourceLimits.MaxCPUTime = 60
+			}
+			if tc.ResourceLimits.MaxFileSize == nil || *tc.ResourceLimits.MaxFileSize < 10000000 {
+				*tc.ResourceLimits.MaxFileSize = 10000000
+			}
+			if tc.ResourceLimits.MaxResidentSet == nil || *tc.ResourceLimits.MaxResidentSet < 1000000000 {
+				*tc.ResourceLimits.MaxResidentSet = 1000000000
+			}
 		}
+
+		if false { // FIXME: Replace once we figure out how Submitty_Count works
+			panic("implement me!")
+		}
+
+		// FIXME: Add defaults below
 	}
 
 	return tc.validate()
