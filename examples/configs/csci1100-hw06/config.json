@@ -1,0 +1,204 @@
+{
+    "autograding" : {
+        "submission_to_runner" : ["**/*"],
+        "submission_to_validation" : ["**/*"]
+    },
+
+    "assignment_message" : "Submit each part of your homework to the right bucket or you will not receive credit. We will be autograding 90/100 points. The remaining 10 points will be graded by your TA.",
+    "part_names" : [ "Part 1: Autocorrect Fail", "Part 2: Fantastic Beasts in the Wizarding World of CS1" ],
+
+    // FIXME:  This section of resource limits should go away soon
+    "resource_limits" : {
+        "RLIMIT_CPU" : 60,
+        "RLIMIT_NPROC" : 100,
+        "RLIMIT_AS" : "RLIM_INFINITY"
+    },
+    "grading_parameters" : {
+        "TOTAL_POINTS" : 100,
+        "AUTO_POINTS" : 90,
+        "TA_POINTS" : 10
+    },
+    "testcases" : [
+        {
+            "title" : "Autocorrect Fail",
+            "command" : [ "python3 part1/hw6_part1.py < part1/hw6_1_1_in.txt",
+                          "python3 part1/hw6_part1.py < part1/hw6_1_2_in.txt",
+                          "python3 part1/hw6_part1.py < part1/hw6_1_3_in.txt",
+                          "submitty_count -l python function set part1/hw6_part1.py"],
+            "points" : 30,
+            "validation" : [
+                {
+                    // verify program output
+                    "method" : "diff",
+                    "comparison" : "byLine",
+                    "ignoreWhitespace" : true,
+                    "ignore_line_endings" : true,
+                    "external_student_output" : true,
+                    "actual_file" : "STDOUT_0.txt",
+                    "description" : "Program Output",
+                    "expected_file" : "part1/hw6_1_1_out.txt",
+                    "deduction" : 0.33333333333333333333
+                },
+                {
+                    // verify program output
+                    "method" : "diff",
+                    "comparison" : "byLine",
+                    "ignoreWhitespace" : true,
+                    "ignore_line_endings" : true,
+                    "external_student_output" : true,
+                    "actual_file" : "STDOUT_1.txt",
+                    "description" : "Program Output",
+                    "expected_file" : "part1/hw6_1_2_out.txt",
+                    "deduction" : 0.33333333333333333333
+                },
+                {
+                    // verify program output
+                    "method" : "diff",
+                    "comparison" : "byLine",
+                    "ignoreWhitespace" : true,
+                    "ignore_line_endings" : true,
+                    "external_student_output" : true,
+                    "actual_file" : "STDOUT_2.txt",
+                    "description" : "Program Output",
+                    "expected_file" : "part1/hw6_1_3_out.txt",
+                    "deduction" : 0.33333333333333333333
+                },
+                {
+                    // number of set statements must be > 1
+                    "method" : "intComparison",
+                    "actual_file" : "STDOUT_3.txt",
+                    "description" : "Number of set statements",
+                    "comparison" : "ge",
+                    "term" : 1,
+                    "deduction" : 0.20
+                }
+            ]
+        },
+        {
+            "title" : "Autocorrect Fail Instructor Test Cases",
+            "command" : [ "python3 part1/hw6_part1.py < part1/hw6_1_3_in.txt"],
+            "hidden" : true,
+            "points" : 15,
+            "validation" : [
+                {
+                    // verify program output
+                    "method" : "diff",
+                    "comparison" : "byLine",
+                    "ignoreWhitespace" : true,
+                    "ignore_line_endings" : true,
+                    "external_student_output" : true,
+                    "actual_file" : "STDOUT.txt",
+                    "description" : "Program Output",
+                    "expected_file" : "part1/hw6_1_3_out.txt"
+                }
+            ]
+        },
+        {
+            "title" : "Autocorrect Fail Code Style - informational only; no autograding",
+            "command" : [ "pylint --rcfile=.pylintrc part1/hw6_part1.py" ],
+            "points" : 0,
+            "validation" : [
+                // obtain a Pylint report
+                {
+                    "method" : "custom",
+                    // use "Pylint" custom grader, reported scores from range [0; 9] will map to grades [0.0; 1.0] using linear interpolation
+                    "args" : "pylint, 2, 0, 9, 0.0, 1.0",
+                    "deduction" : 1.0,
+                    "actual_file" : "STDOUT.txt"
+                }
+            ]
+        },
+        {
+            "title" : "Fantastic Beasts in the Wizarding World of CS1",
+            "command" : [ "python3 part2/hw6_part2.py < part2/hw6_2_1_in.txt",
+                          "python3 part2/hw6_part2.py < part2/hw6_2_2_in.txt",
+                          "python3 part2/hw6_part2.py < part2/hw6_2_3_in.txt",
+                          "submitty_count -l python function set part2/hw6_part2.py"],
+            "points" : 30,
+            "validation" : [
+                {
+                    "method" : "diff",
+                    "comparison" : "byLine",
+                    "ignoreWhitespace" : true,
+                    "ignore_line_endings" : true,
+                    "external_student_output" : true,
+                    "actual_file": "STDOUT_0.txt",
+                    "description" : "Program Output",
+                    "expected_file" : "part2/hw6_2_1_out.txt",
+                    "deduction" : 0.33333333333333333333
+                },
+                {
+                    "method" : "diff",
+                    "comparison" : "byLine",
+                    "ignoreWhitespace" : true,
+                    "ignore_line_endings" : true,
+                    "external_student_output" : true,
+                    "actual_file": "STDOUT_1.txt",
+                    "description" : "Program Output",
+                    "expected_file" : "part2/hw6_2_2_out.txt",
+                    "deduction" : 0.33333333333333333333
+                },
+                {
+                    "method" : "diff",
+                    "comparison" : "byLine",
+                    "ignoreWhitespace" : true,
+                    "ignore_line_endings" : true,
+                    "external_student_output" : true,
+                    "actual_file": "STDOUT_2.txt",
+                    "description" : "Program Output",
+                    "expected_file" : "part2/hw6_2_3_out.txt",
+                    "deduction" : 0.33333333333333333333
+                },
+                {
+                    // number of set statements must be > 1
+                    "method" : "intComparison",
+                    "actual_file" : "STDOUT_3.txt",
+                    "description" : "Number of set statements",
+                    "comparison" : "ge",
+                    "term" : 1,
+                    "deduction" : 0.20
+                }
+            ]
+        },
+        {
+            "title" : "Fantastic Beasts in the Wizarding World of CS1 Instructor Test Cases",
+            "command" : ["python3 part2/hw6_part2.py < part2/hw6_2_4_in.txt"],
+            "hidden" : true,
+            "points" : 15,
+            "validation" : [
+                {
+                    "method" : "diff",
+                    "comparison" : "byLine",
+                    "ignoreWhitespace" : true,
+                    "ignore_line_endings" : true,
+                    "external_student_output" : true,
+                    "actual_file": "STDOUT.txt",
+                    "description" : "Program Output",
+                    "expected_file" : "part2/hw6_2_4_out.txt"
+                }
+            ]
+        },
+        {
+            "title" : "Fantastic Beasts in the Wizarding World of CS1 Code Style - informational only; no autograding",
+            "command" : [ "pylint --rcfile=.pylintrc part2/hw6_part2.py" ],
+            "points" : 0,
+            "validation" : [
+                // obtain a Pylint report
+                {
+                    "method" : "custom",
+                    // use "Pylint" custom grader, reported scores from range [0; 9] will map to grades [0.0; 1.0] using linear interpolation
+                    "args" : "pylint, 2, 0, 9, 0.0, 1.0",
+                    "deduction" : 1.0,
+                    "actual_file" : "STDOUT.txt"
+                }
+            ]
+        },
+        {
+            "max_submissions": 500,
+            "penalty": -0.1,
+            "points": -5,
+            "title": "Submission Limit",
+            "type": "FileCheck"
+        }
+    ]
+}
