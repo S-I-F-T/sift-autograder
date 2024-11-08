@@ -48,6 +48,7 @@ func (c *Config) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// Autograding configuration structure
 type Autograding struct {
 	CompilationsToRunner     []string `json:"compilation_to_runner"`
 	CompilationsToValidation []string `json:"compilation_to_validation"`
@@ -85,11 +86,14 @@ func (co *ContainerOptions) validate() error {
 	return nil
 }
 
+/* Grading parameters structure to keep track of
+auto-grader and extra-credit points. */
 type GradingParameters struct {
 	AutoPoints        uint16 `json:"AUTO_POINTS"`
 	ExtraCreditPoints uint16 `json:"EXTRA_CREDIT_POINTS"`
 }
 
+/* Validates the grading parameters */
 func (gp *GradingParameters) validate() error {
 	return nil
 }
@@ -113,6 +117,8 @@ func (err *ConfigError) Error() string {
 	return err.Message
 }
 
+/* Defining resource limits to prevent 
+overuse of limited resources. */
 type ResourceLimits struct {
 	MaxCPUTime      *uint `json:"RLIMIT_CPU"`        // Max seconds
 	MaxFileSize     *uint `json:"RLIMIT_FSIZE"`      // Max bytes
