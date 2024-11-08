@@ -48,7 +48,7 @@ func (tc *Testcase) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	if tc.ResourceLimits.CPUTime <= 0 {
+	if *(tc.ResourceLimits.MaxCPUTime) <= 0 {
 		if tc.Type == Compilation {
 			if tc.ResourceLimits.MaxCPUTime == nil || *tc.ResourceLimits.MaxCPUTime < 60 {
 				*tc.ResourceLimits.MaxCPUTime = 60
