@@ -7,8 +7,11 @@ import (
 	"testing"
 )
 
-/* Validating umarshalling of json file to
-string array. */
+/*
+	Validating umarshall ing of json file to
+
+string array.
+*/
 func TestStringArray_UnmarshalJSON(t *testing.T) {
 
 	const tests = 2
