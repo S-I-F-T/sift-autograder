@@ -3,9 +3,9 @@ package gradables
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"slices"
 	"strings"
-	"syscall"
 )
 
 const (
@@ -47,6 +47,22 @@ func (tc *Testcase) UnmarshalJSON(data []byte) error {
 		Type string `json:"type"`
 	}
 
+	tc.ResourceLimits.MaxCPUTime = 10
+	tc.ResourceLimits.MaxFileSize = 100_1000
+	tc.ResourceLimits.MaxData = 500_000_000
+	tc.ResourceLimits.MaxStack = 500_000_000
+	tc.ResourceLimits.MaxCoreFile = 0
+	tc.ResourceLimits.MaxResidentSet = 1_000_000_000
+	tc.ResourceLimits.MaxFileNumber = 100
+	tc.ResourceLimits.MaxLockedMemory = 500_000_000
+	tc.ResourceLimits.MaxAddressSpace = math.MaxInt64
+	tc.ResourceLimits.MaxLocks = 100
+	tc.ResourceLimits.MaxSignalQueue = 0
+	tc.ResourceLimits.MaxMessageQueue = 0
+	tc.ResourceLimits.MaxNice = 1_000_000_000 // Infinity
+	tc.ResourceLimits.MaxRTPriority = 0
+	tc.ResourceLimits.MaxRTTime = 0
+
 	if err := json.Unmarshal(data, &Typed); err != nil {
 		return err
 	}
@@ -54,9 +70,6 @@ func (tc *Testcase) UnmarshalJSON(data []byte) error {
 	if Typed.Type == Compilation {
 		tc.ResourceLimits.MaxCPUTime = 60
 		tc.ResourceLimits.MaxFileSize = 10000000
-	} else {
-		tc.ResourceLimits.MaxCPUTime = 10
-		tc.ResourceLimits.MaxFileSize = 100_1000
 	}
 
 	if false { // FIXME: Replace once we figure out how Submitty_Count works
@@ -64,20 +77,6 @@ func (tc *Testcase) UnmarshalJSON(data []byte) error {
 	} else {
 		// FIXME: Whatever Submitty_Count changes from the default, change back here
 	}
-
-	tc.ResourceLimits.MaxData = 500_000_000
-	tc.ResourceLimits.MaxStack = 500_000_000
-	tc.ResourceLimits.MaxCoreFile = 0
-	tc.ResourceLimits.MaxResidentSet = 1_000_000_000
-	tc.ResourceLimits.MaxFileNumber = 100
-	tc.ResourceLimits.MaxLockedMemory = 500_000_000
-	tc.ResourceLimits.MaxAddressSpace = syscall.RLIM_INFINITY
-	tc.ResourceLimits.MaxLocks = 100
-	tc.ResourceLimits.MaxSignalQueue = 0
-	tc.ResourceLimits.MaxMessageQueue = 0
-	tc.ResourceLimits.MaxNice = 1_000_000_000 // Infinity
-	tc.ResourceLimits.MaxRTPriority = 0
-	tc.ResourceLimits.MaxRTTime = 0
 
 	type JSONTestcase Testcase
 	if err := json.Unmarshal(data, (*JSONTestcase)(tc)); err != nil {
