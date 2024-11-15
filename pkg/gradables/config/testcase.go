@@ -86,28 +86,41 @@ func (tc *Testcase) UnmarshalJSON(data []byte) error {
 	return tc.validate()
 }
 
+/* Validate method for the Testcase struct, which checks if the Testcase fields
+   meet specific requirements based on its type. Returns an error if validation fails. */
 func (tc *Testcase) validate() error {
 
+	// Defines valid types for testcase field 'Type'
 	types := []string{"Compilation", "FileCheck", "Execution"}
+	// Checks if the slice contains one of the above types
 	if !slices.Contains(types, tc.Type) {
 		return &ConfigError{fmt.Sprintf("'testcase.type' must be one of: %s", strings.Join(types, ", "))}
 	}
 
+	// Ensure that the testcase field 'Title' is not empty
 	if tc.Title == "" {
 		return &ConfigError{"'testcase.title' is required"}
 	}
 
+	// Defines valid types for testcase field 'Filenames'
 	requireFiles := []string{"FileCheck", "Execution"}
+	/* If Filenames is nil and the slice does not contain the above types,
+	   then a config error is outputted to indicate that the Filenames is required. */
 	if tc.Filenames == nil && !slices.Contains(requireFiles, tc.Type) {
 		return &ConfigError{fmt.Sprintf("`testcase.file_names` required for testcases of types: %s",
 			strings.Join(requireFiles, ", "))}
 	}
 
+	// Ensures that executable names are provided for testcase
 	if tc.ExecutableNames == nil && tc.Type == "Compilation" {
 		return &ConfigError{"`testcase.executable_name` required for testcases of type `Compilation`"}
 	}
 
+	// Defines types for Commands and Container fields in testcase.
 	runTypes := []string{"FileCheck", "Execution"}
+	/* Check if tc.type is in runTypes and that the Commands and Containers
+	fields of the test case aren't null. A config error is returned to indicate
+	that the fields are required for the types. */
 	if slices.Contains(runTypes, tc.Type) && tc.Commands == nil && tc.Containers == nil {
 		return &ConfigError{fmt.Sprintf("`testcase.commands` or `testcase.containers` required for testcases of types: %s",
 			strings.Join(types, ", "))}
