@@ -8,6 +8,12 @@ import (
 	"testing"
 )
 
+/*
+	Validating the config.json through the
+
+TestConfigJSON() function and outputting
+errors from config structure.
+*/
 func TestConfigJSON(t *testing.T) {
 
 	inputs := []string{
@@ -21,15 +27,15 @@ func TestConfigJSON(t *testing.T) {
 	expected := []*Config{
 		{[]Testcase{}, "", 100_000, GradingParameters{}, nil,
 			"default", "jailed_sandbox", "jailed_sandbox", Autograding{},
-			ContainerOptions{}, nil},
+			ContainerOptions{}, nil, ResourceLimits{}},
 
-		{[]Testcase{Testcase{Title: someTitle, Type: "Execution", Commands: []string{"hi"}}}, "", 100_000, GradingParameters{},
+		{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"hi"}}}, "", 100_000, GradingParameters{},
 			nil, "default", "jailed_sandbox", "jailed_sandbox",
-			Autograding{}, ContainerOptions{}, nil},
+			Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
 
-		{[]Testcase{Testcase{Title: someTitle, Type: "Execution", Commands: []string{"g++", "hello.cpp", "-o", "hello.exe"}, ExtraCredit: true}}, "", 100_000, GradingParameters{},
+		{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"g++", "hello.cpp", "-o", "hello.exe"}, ExtraCredit: true}}, "", 100_000, GradingParameters{},
 			nil, "default", "jailed_sandbox", "jailed_sandbox",
-			Autograding{}, ContainerOptions{}, nil},
+			Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
 	}
 
 	if len(inputs) != len(expected) {
@@ -56,6 +62,7 @@ func TestConfigJSON(t *testing.T) {
 
 }
 
+// Testing failures for invalid config.json files.
 func TestConfigInvalidJSON(t *testing.T) {
 	inputs := []string{
 		"null",
