@@ -8,52 +8,55 @@ import (
 	"testing"
 )
 
-/* Validating the config.json through the 
-TestConfigJSON() function and outputting
-errors from config structure. */
-func TestConfigJSON(t *testing.T) {
+/*
+	Validating the config.json through the
 
-	inputs := []string{
-		`{"testcases":[]}`,
-		`{"testcases":[{"title":"some title","command":["hi"]}]}`,
-		`{"testcases":[{"title":"some title","command":["g++", "hello.cpp", "-o", "hello.exe"],"extra_credit":true}]}`,
-	}
+TestConfigJSON() function and outputting
+errors from config structure.
+*/
+func TestConfigJSON(t *testing.T) {
 
 	someTitle := "some title"
 
-	expected := []*Config{
-		{[]Testcase{}, "", 100_000, GradingParameters{}, nil,
-			"default", "jailed_sandbox", "jailed_sandbox", Autograding{},
-			ContainerOptions{}, nil, ResourceLimits{}},
-
-		{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"hi"}}}, "", 100_000, GradingParameters{},
-			nil, "default", "jailed_sandbox", "jailed_sandbox",
-			Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
-
-		{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"g++", "hello.cpp", "-o", "hello.exe"}, ExtraCredit: true}}, "", 100_000, GradingParameters{},
-			nil, "default", "jailed_sandbox", "jailed_sandbox",
-			Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
-	}
-
-	if len(inputs) != len(expected) {
-		t.Fatal("Input-Expected length mismatch")
+	tests := []struct {
+		Input    string
+		Expected Config
+	}{
+		{
+			`{"testcases":[]}`,
+			Config{[]Testcase{}, "", 100_000, GradingParameters{}, nil,
+				"default", "jailed_sandbox", "jailed_sandbox", Autograding{},
+				ContainerOptions{}, nil, ResourceLimits{}},
+		},
+		{
+			`{"testcases":[{"title":"some title","command":["hi"]}]}`,
+			Config{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"hi"}}}, "", 100_000, GradingParameters{},
+				nil, "default", "jailed_sandbox", "jailed_sandbox",
+				Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
+		},
+		{
+			`{"testcases":[{"title":"some title","command":["g++", "hello.cpp", "-o", "hello.exe"],"extra_credit":true}]}`,
+			Config{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"g++", "hello.cpp", "-o", "hello.exe"}, ExtraCredit: true}}, "", 100_000, GradingParameters{},
+				nil, "default", "jailed_sandbox", "jailed_sandbox",
+				Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
+		},
 	}
 
 	var cfgErr *ConfigError
-	for idx, input := range inputs {
+	for idx, tc := range tests {
 		var actual Config
-		err := json.Unmarshal([]byte(input), &actual)
+		err := json.Unmarshal([]byte(tc.Input), &actual)
 
 		if errors.As(err, &cfgErr) {
-			t.Fatalf("Config error for JSON '%s': %v", input, err)
+			t.Fatalf("Test %d failed. Input %v. Configuration error: %v\n", idx, tc.Input, err)
 		}
 
 		if err != nil {
-			t.Fatalf("Unmarshalling error for JSON '%s': %v", input, err)
+			t.Fatalf("Test %d failed. Input %v. Unmarshaling error: %v\n", idx, tc.Input, err)
 		}
 
-		if !reflect.DeepEqual(&actual, expected[idx]) {
-			t.Fatalf("\nExpected: %v\nActually: %v", expected[idx], &actual)
+		if !reflect.DeepEqual(actual, tc.Expected) {
+			t.Fatalf("Test %d failed. Input %v. Expected %v. Actually: %v.\n", idx, tc.Input, tc.Expected, actual)
 		}
 	}
 
