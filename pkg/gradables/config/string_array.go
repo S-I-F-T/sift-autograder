@@ -1,6 +1,8 @@
 package gradables
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type StringArray struct {
 	strings []string
@@ -8,6 +10,10 @@ type StringArray struct {
 
 func StringArrayFromString(s string) *StringArray {
 	return &StringArray{[]string{s}}
+}
+
+func NewStringArray(s []string) *StringArray {
+	return &StringArray{s}
 }
 
 func (sa *StringArray) Strings() []string {
@@ -19,11 +25,17 @@ func (sa *StringArray) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	var s string
-	if err := json.Unmarshal(data, &s); err == nil {
-		sa.strings = append(sa.strings, s)
+	var arr []string
+	if err := json.Unmarshal(data, &arr); err == nil {
+		sa.strings = append(sa.strings, arr...)
 		return nil
 	}
 
-	return json.Unmarshal(data, &sa.strings)
+	var str string
+	if err := json.Unmarshal(data, &str); err != nil {
+		return err
+	}
+
+	sa.strings = append(sa.strings, str)
+	return nil
 }
