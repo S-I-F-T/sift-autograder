@@ -19,7 +19,6 @@ type Config struct {
 	Autograding          Autograding       `json:"autograding"`
 	ContainerOptions     ContainerOptions  `json:"container_options"`
 	AllowedSyscalls      []string          `json:"allow_system_calls"`
-	ResourceLimits       ResourceLimits    `json:"resource_limits"`
 }
 
 // UnmarshalJSON Grab data from JSON file, parse them into their correct data structure
