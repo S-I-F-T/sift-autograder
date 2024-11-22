@@ -26,19 +26,19 @@ func TestConfigJSON(t *testing.T) {
 			`{"testcases":[]}`,
 			Config{[]Testcase{}, "", 100_000, GradingParameters{}, nil,
 				"default", "jailed_sandbox", "jailed_sandbox", Autograding{},
-				ContainerOptions{}, nil, ResourceLimits{}},
+				ContainerOptions{}, nil},
 		},
 		{
 			`{"testcases":[{"title":"some title","command":["hi"]}]}`,
 			Config{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"hi"}}}, "", 100_000, GradingParameters{},
 				nil, "default", "jailed_sandbox", "jailed_sandbox",
-				Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
+				Autograding{}, ContainerOptions{}, nil},
 		},
 		{
 			`{"testcases":[{"title":"some title","command":["g++", "hello.cpp", "-o", "hello.exe"],"extra_credit":true}]}`,
 			Config{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"g++", "hello.cpp", "-o", "hello.exe"}, ExtraCredit: true}}, "", 100_000, GradingParameters{},
 				nil, "default", "jailed_sandbox", "jailed_sandbox",
-				Autograding{}, ContainerOptions{}, nil, ResourceLimits{}},
+				Autograding{}, ContainerOptions{}, nil},
 		},
 	}
 
