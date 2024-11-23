@@ -14,6 +14,7 @@ func StringArrayFromString(s string) *StringArray {
 	return &StringArray{[]string{s}}
 }
 
+// Constructor function that initializes and returns a pointer to a StringArray struct.
 func NewStringArray(s []string) *StringArray {
 	return &StringArray{s}
 }
