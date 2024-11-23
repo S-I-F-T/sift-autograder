@@ -79,20 +79,28 @@ func TestConfigJSON(t *testing.T) {
 
 // Testing failures for invalid config.json files.
 func TestConfigInvalidJSON(t *testing.T) {
+
+	// define a slice of invalid JSON strings that should fail unmarshaling.
 	inputs := []string{
 		"null",
 		"{}",
 	}
 
+	// iterate over each invalid input JSON.
 	for idx, input := range inputs {
+		// initialize an empty Config object to hold the result of unmarshaling.
 		actual := &Config{}
+		// attempt to unmarshal the invalid JSON input into the Config object.
 		err := json.Unmarshal([]byte(input), actual)
 
+		// check if no error occurred (unexpected behavior for invalid inputs).
 		if err == nil {
 			t.Errorf("Test %d: JSON unmarshalling should have failed for JSON '%s'", idx, input)
 		}
 
+		// define a variable to check if the error is of type ConfigError.
 		var cfgErr *ConfigError
+		// verify that the error is a ConfigError.
 		if !errors.As(err, &cfgErr) {
 			t.Errorf("Test %d: Unexpected unmarshalling error for JSON '%s'", idx, input)
 		}
