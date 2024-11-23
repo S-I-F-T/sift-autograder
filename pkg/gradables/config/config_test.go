@@ -16,25 +16,33 @@ errors from config structure.
 */
 func TestConfigJSON(t *testing.T) {
 
+	// sample title for use
 	someTitle := "some title"
 
+	/* define a slice of test cases with different JSON inputs
+	   and their corresponding expected Config structs. 
+	*/
 	tests := []struct {
 		Input    string
 		Expected Config
 	}{
+		// testing empty testcases
 		{
 			`{"testcases":[]}`,
+			// expected output: an empty list of testcases and default values for other fields.
 			Config{[]Testcase{}, "", 100_000, GradingParameters{}, nil,
 				"default", "jailed_sandbox", "jailed_sandbox", Autograding{},
 				ContainerOptions{}, nil},
 		},
 		{
+			// a single testcase with a title and a single command.
 			`{"testcases":[{"title":"some title","command":["hi"]}]}`,
 			Config{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"hi"}}}, "", 100_000, GradingParameters{},
 				nil, "default", "jailed_sandbox", "jailed_sandbox",
 				Autograding{}, ContainerOptions{}, nil},
 		},
 		{
+			// expected output: a single testcase with the provided title and command, default values for others.
 			`{"testcases":[{"title":"some title","command":["g++", "hello.cpp", "-o", "hello.exe"],"extra_credit":true}]}`,
 			Config{[]Testcase{{Title: someTitle, Type: "Execution", Commands: []string{"g++", "hello.cpp", "-o", "hello.exe"}, ExtraCredit: true}}, "", 100_000, GradingParameters{},
 				nil, "default", "jailed_sandbox", "jailed_sandbox",
@@ -42,19 +50,26 @@ func TestConfigJSON(t *testing.T) {
 		},
 	}
 
+	// define a variable to capture custom configuration errors during unmarshaling.
 	var cfgErr *ConfigError
+	// iterating over all the test cases to validate JSON unmarshaling behavior.
 	for idx, tc := range tests {
 		var actual Config
+		// attempting to unmarshal the JSON input into Config struct.
 		err := json.Unmarshal([]byte(tc.Input), &actual)
-
+		
+		// check if the error is of type ConfigError and fail the test if encountered.
 		if errors.As(err, &cfgErr) {
 			t.Fatalf("Test %d failed. Input %v. Configuration error: %v\n", idx, tc.Input, err)
 		}
-
+		
+		// check for any other errors during unmarshaling and fail the test if found.
 		if err != nil {
 			t.Fatalf("Test %d failed. Input %v. Unmarshaling error: %v\n", idx, tc.Input, err)
 		}
 
+		// useing reflect.DeepEqual to compare the actual and expected Config structs.
+		// if they are not equal, fail the test and output the discrepancy.
 		if !reflect.DeepEqual(actual, tc.Expected) {
 			t.Fatalf("Test %d failed. Input %v. Expected %v. Actually: %v.\n", idx, tc.Input, tc.Expected, actual)
 		}
