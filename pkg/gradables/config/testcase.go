@@ -29,25 +29,36 @@ type Testcase struct {
 	Actions         []string     `json:"actions"`         // actions for testcase
 }
 
-func (tc *Testcase) UnmarshalJSON(data []byte) error {
-	tc.Type = "Execution" // Could also
-	tc.Details = ""
-	tc.Points = 0
-	tc.Hidden = false
-	tc.ExtraCredit = false
-	tc.Actions = nil
 
+/*  Unmarshalling method for the Testcase struct. 
+	Allows for initialization of default values and 
+	additional validations during the unmarshalling process.
+*/
+func (tc *Testcase) UnmarshalJSON(data []byte) error {
+	// setting the default values for Testcase fields
+	tc.Type = "Execution" // default type for testcase
+	tc.Details = "" // default empty details
+	tc.Points = 0 // setting default points to 0
+	tc.Hidden = false // setting default visibility to not hidden
+	tc.ExtraCredit = false // default is no extra credit
+	tc.Actions = nil // default to actions to null for no actions
+	
+	// check if input data is empty/null and exit early
 	if string(data) == "" || string(data) == "null" {
 		return nil
 	}
 
-	// TODO: Figure out how Submitty_Count works
+	// TODO: Figure out how Submitty_Count works - placeholder comment
 
+	// create an alias type to avoid recursive unmarshalling
 	type JSONTestcase Testcase
+	// unmarshal input json data into the testcase using the alias type
 	if err := json.Unmarshal(data, (*JSONTestcase)(tc)); err != nil {
 		return err
 	}
 
+	// perform additional validation on testcase fields after unmarshalling
+	// validte() function is described below
 	return tc.validate()
 }
 
