@@ -1,10 +1,10 @@
 package gradables
 
-/*
-	Constructing Course struct from config.json
 
-https://github.com/Submitty/Submitty/blob/main/autograder/tests/data/config_files
-*/
+// 	Constructing Course struct from config.json
+
+// https://github.com/Submitty/Submitty/blob/main/autograder/tests/data/config_files
+
 type Course struct {
 	CourseName        string `json:"course_name"`          // name of course
 	CourseHomeURL     string `json:"course_home_url"`      // course home url

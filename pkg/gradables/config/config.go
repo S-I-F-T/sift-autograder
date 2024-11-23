@@ -85,17 +85,15 @@ func (co *ContainerOptions) validate() error {
 	return nil
 }
 
-/*
-	Grading parameters structure to keep track of
 
-auto-grader and extra-credit points.
-*/
+// 	Grading parameters structure to keep track of
+// auto-grader and extra-credit points.
 type GradingParameters struct {
 	AutoPoints        uint16 `json:"AUTO_POINTS"`
 	ExtraCreditPoints uint16 `json:"EXTRA_CREDIT_POINTS"`
 }
 
-/* Validates the grading parameters */
+// Validates the grading parameters
 func (gp *GradingParameters) validate() error {
 	return nil
 }

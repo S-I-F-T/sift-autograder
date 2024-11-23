@@ -8,20 +8,18 @@ import (
 	"testing"
 )
 
-/*
-	Validating the config.json through the
 
-TestConfigJSON() function and outputting
-errors from config structure.
-*/
+// 	Validating the config.json through the
+// TestConfigJSON() function and outputting
+// errors from config structure.
 func TestConfigJSON(t *testing.T) {
 
 	// sample title for use
 	someTitle := "some title"
 
-	/* define a slice of test cases with different JSON inputs
-	   and their corresponding expected Config structs. 
-	*/
+	// define a slice of test cases with different JSON inputs
+	//  and their corresponding expected Config structs. 
+	//
 	tests := []struct {
 		Input    string
 		Expected Config

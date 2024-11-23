@@ -30,10 +30,10 @@ type Testcase struct {
 }
 
 
-/*  Unmarshalling method for the Testcase struct. 
-	Allows for initialization of default values and 
-	additional validations during the unmarshalling process.
-*/
+// Unmarshalling method for the Testcase struct. 
+// Allows for initialization of default values and 
+// additional validations during the unmarshalling process.
+//
 func (tc *Testcase) UnmarshalJSON(data []byte) error {
 	// setting the default values for Testcase fields
 	tc.Type = "Execution" // default type for testcase
@@ -62,11 +62,10 @@ func (tc *Testcase) UnmarshalJSON(data []byte) error {
 	return tc.validate()
 }
 
-/*
-Validate method for the Testcase struct, which checks if the Testcase fields
-
-	meet specific requirements based on its type. Returns an error if validation fails.
-*/
+// 
+// Validate method for the Testcase struct, which checks if the Testcase fields
+// meet specific requirements based on its type. Returns an error if validation fails.
+//
 func (tc *Testcase) validate() error {
 
 	// Defines valid types for testcase field 'Type'
@@ -83,8 +82,8 @@ func (tc *Testcase) validate() error {
 
 	// Defines valid types for testcase field 'Filenames'
 	requireFiles := []string{"FileCheck", "Execution"}
-	/* If Filenames is nil and the slice does not contain the above types,
-	   then a config error is outputted to indicate that the Filenames is required. */
+	// If Filenames is nil and the slice does not contain the above types,
+	// then a config error is outputted to indicate that the Filenames is required.
 	if tc.Filenames == nil && !slices.Contains(requireFiles, tc.Type) {
 		return &ConfigError{fmt.Sprintf("`testcase.file_names` required for testcases of types: %s",
 			strings.Join(requireFiles, ", "))}
@@ -97,9 +96,9 @@ func (tc *Testcase) validate() error {
 
 	// Defines types for Commands and Container fields in testcase.
 	runTypes := []string{"FileCheck", "Execution"}
-	/* Check if tc.type is in runTypes and that the Commands and Containers
-	fields of the test case aren't null. A config error is returned to indicate
-	that the fields are required for the types. */
+	// Check if tc.type is in runTypes and that the Commands and Containers
+	// fields of the test case aren't null. A config error is returned to indicate
+	// that the fields are required for the types.
 	if slices.Contains(runTypes, tc.Type) && tc.Commands == nil && tc.Containers == nil {
 		return &ConfigError{fmt.Sprintf("`testcase.commands` or `testcase.containers` required for testcases of types: %s",
 			strings.Join(types, ", "))}

@@ -7,9 +7,9 @@ import (
 	"testing"
 )
 
-/*
-Validating umarshaling of json file to string array.
-*/
+//
+// Validating umarshaling of json file to string array.
+//
 func TestStringArray_UnmarshalJSON(t *testing.T) {
 	tests := []struct {
 		Input    string
